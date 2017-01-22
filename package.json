@@ -1,0 +1,14 @@
+{
+  "name": "mm-utility-tool",
+  "version": "1.0.0",
+  "description": "Utility tool to log console.logs to a file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michelle Munksgard",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.3"
+  }
+}
