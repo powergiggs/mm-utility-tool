@@ -1,8 +1,8 @@
 {
   "name": "mm-utility-tool",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Utility tool to log console.logs to a file.",
-  "main": "index.js",
+  "main": "utility-tool.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
