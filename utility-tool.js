@@ -1,41 +1,85 @@
 const chalk = require('chalk');
-const fs = require('fs');
+
+function bumpIt(currentVersion, incrementType) {
+  const versionArray = currentVersion.split('.');
+  // loop through index in array
+  for (const versionIndex in versionArray) {
+    versionArray[versionIndex] = parseInt(versionArray[versionIndex], 10);
+  }
+        // match incrementType type with case type
+     switch (incrementType.toLowerCase()) {
+       case 'patch':
+         versionArray[2] += 1; // patch
+         break;
+
+       case 'minor':
+         versionArray[1] += 1;// minor
+         versionArray[2] = 0; // patch
+         break;
+
+       case 'major':
+         versionArray[0] += 1;// major
+         versionArray[1] = 0;// minor
+         versionArray[2] = 0;// patch
+         break;
+     }
+  // return result as string
+  return versionArray.join('.');
+}
 
 
-const utility = (title, object, status) => {
-  const sep = '\n***********************\n';
-  const out = sep + title + sep;
-};
+function debug(title, object, status) {
+  if (process.env.DEBUG === 'true') {
+    const sep = '\n==============DEBUGGING=============\n';
+    const out = sep + title + sep;
+    const date = new Date().toLocaleString();
+  // color variables
+    const success = chalk.green;
+    const error = chalk.red;
+    const assist = chalk.yellow;
+    const blueb = chalk.bold.blue;
 
-const success = chalk.bold.white.bgGreen;
-const error = chalk.bold.white.bgRed;
-const assist = chalk.bold.white.bgMagenta;
+  // store the message content
+    const messageTitle = out;
+    const messageBody = object;
+    const messageStatus = status.toLowerCase();
 
-function logSuccess(out, object, status) {
-  if (process.env.DEBUG) {
-    console.log(success(out, object, status));
-    // log to file
-    fs.appendFile('./logs', (out, object, status));
+    if (!messageTitle) {
+    messageTitle = 'No msg title enter'
+    }
+
+  if (!messageBody) {
+    messageTitle = 'No msg body'
+  }
+
+    const messageFormat = `${out} MSG: "${messageBody}" \n\nTIME: ${date}`;
+
+
+  switch(messageStatus) {
+    case 'error!':
+    case 'error':
+    case 'err':
+
+    console.error(error('\n' + messageStatus + ' ' + messageFormat + '\n'));
+      break;
+    case 'success!':
+    case 'success':
+    // messageStatus = 'success';
+    console.log(success('\n' + messageStatus + ' ' + messageFormat + '\n'));
+      break;
+
+    case 'warn':
+    case 'warning!':
+    case 'warning':
+    // messageStatus = 'warning';
+    console.warn(blueb('\n' + messageStatus + ' ' + messageFormat + '\n'));
+      break;
+
+
+  }
   }
 }
 
-function logError(out, object, status) {
-  if (process.env.DEBUG) {
-    console.log(error(out, object, status));
-      // log to file
-    fs.appendFile('./logs', (out, object, status));
-  }
-}
 
-function logAssist(out, object, status) {
-  if (process.env.DEBUG) {
-    console.log(assist(out, object, status));
-      // log to file
-    fs.appendFile('./logs', (out, object, status));
-  }
-}
-
-  // debug
-exports.logSuccess = logSuccess;
-exports.logError = logError;
-exports.logAssist = logAssist;
+exports.bumpIt = bumpIt;
+exports.debug = debug;
